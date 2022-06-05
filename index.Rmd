@@ -23,6 +23,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r carga-paquetes, message=FALSE}
 library(readr)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(plotly)
 ```
@@ -45,7 +46,9 @@ bioestadisticas <-
 
 # Análisis
 
-## Peso y grasa corporal
+## Peso
+
+### Peso y grasa corporal
 
 ```{r peso-grasa, message=FALSE}
 peso_grasa <-
@@ -58,7 +61,7 @@ peso_grasa <-
 ggplotly(peso_grasa)
 ```
 
-## Peso y masa muscular
+### Peso y masa muscular
 
 ```{r peso-musculo, message=FALSE}
 peso_musculo <-
@@ -71,9 +74,11 @@ peso_musculo <-
 ggplotly(peso_musculo)
 ```
 
-## Natación (distancia real) y peso
+## Natación
 
-```{r natacion_peso, message=FALSE}
+### Natación (distancia real) y peso
+
+```{r natacion_real_peso, message=FALSE}
 natacion_real_peso <-
   bioestadisticas %>%
   ggplot(aes(x = `nat-distancia-real`, y = peso)) +
@@ -84,9 +89,9 @@ natacion_real_peso <-
 ggplotly(natacion_real_peso)
 ```
 
-## Natación (distancia reloj) y peso
+### Natación (distancia reloj) y peso
 
-```{r natacion_reloj, message=FALSE}
+```{r natacion_reloj_peso, message=FALSE}
 natacion_reloj_peso <-
   bioestadisticas %>%
   ggplot(aes(x = `nat-distancia-reloj`, y = peso)) +
@@ -97,8 +102,9 @@ natacion_reloj_peso <-
 ggplotly(natacion_reloj_peso)
 ```
 
+## Fecha
 
-## Fecha y peso
+### Fecha y peso
 
 ```{r fecha-peso, message=FALSE}
 fecha_peso <-
@@ -111,7 +117,7 @@ fecha_peso <-
 ggplotly(fecha_peso)
 ```
 
-## Fecha y grasa
+### Fecha y grasa
 
 ```{r fecha-grasa, message=FALSE}
 fecha_grasa <-
@@ -124,7 +130,7 @@ fecha_grasa <-
 ggplotly(fecha_grasa)
 ```
 
-## Fecha y músculo
+### Fecha y músculo
 
 ```{r fecha-musculo, message=FALSE}
 fecha_musculo <-
@@ -135,4 +141,18 @@ fecha_musculo <-
   theme_minimal()
 
 ggplotly(fecha_musculo)
+```
+
+### Fecha y natación (distancia real)
+
+```{r fecha-natacion_real, message=FALSE}
+fecha_natacion_real <-
+  bioestadisticas %>%
+  filter(!is.na(`nat-distancia-real`)) %>%
+  ggplot(aes(x = fecha, y = `nat-distancia-real`)) +
+  geom_line(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal()
+
+ggplotly(fecha_natacion_real)
 ```
