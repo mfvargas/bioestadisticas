@@ -143,16 +143,28 @@ fecha_musculo <-
 ggplotly(fecha_musculo)
 ```
 
-### Fecha y natación (distancia real)
+### Fecha y natación
 
-```{r fecha-natacion_real, message=FALSE}
-fecha_natacion_real <-
+```{r fecha-natacion, message=FALSE}
+fecha_natacion <-
   bioestadisticas %>%
   filter(!is.na(`nat-distancia-real`)) %>%
-  ggplot(aes(x = fecha, y = `nat-distancia-real`)) +
-  geom_line(color = "blue") +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  ggplot() +
+  geom_line(aes(x = fecha, y = `nat-distancia-real`), color = "blue") +
+  geom_line(aes(x = fecha, y = `nat-distancia-reloj`), color = "red") +
+  geom_smooth(
+    aes(x = fecha, y = `nat-distancia-real`),
+    method = "lm",
+    se = FALSE,
+    color = "blue"
+  ) +
+  geom_smooth(
+    aes(x = fecha, y = `nat-distancia-reloj`),
+    method = "lm",
+    se = FALSE,
+    color = "red"
+  ) +  
   theme_minimal()
 
-ggplotly(fecha_natacion_real)
+ggplotly(fecha_natacion)
 ```
