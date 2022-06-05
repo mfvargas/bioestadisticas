@@ -148,7 +148,7 @@ ggplotly(fecha_musculo)
 ```{r fecha-natacion, message=FALSE}
 fecha_natacion <-
   bioestadisticas %>%
-  filter(!is.na(`nat-distancia-real`)) %>%
+  filter(!is.na(`nat-distancia-real`) & !is.na(`nat-distancia-reloj`)) %>%
   ggplot() +
   geom_line(aes(x = fecha, y = `nat-distancia-real`), color = "blue") +
   geom_line(aes(x = fecha, y = `nat-distancia-reloj`), color = "red") +
