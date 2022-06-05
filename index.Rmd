@@ -1,0 +1,138 @@
+---
+title: "Bioestadísticas"
+author: "Manuel Vargas"
+date: "6/5/2022"
+output:
+  html_document:
+    theme: readable    
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Preparativos
+
+## Carga de paquetes
+
+```{r carga-paquetes, message=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+```
+
+## Lectura de datos
+
+```{r lectura-datos, message=FALSE}
+bioestadisticas <-
+  read_delim("bioestadisticas.csv")
+```
+
+## Transformaciones
+
+```{r transformaciones-datos}
+bioestadisticas <-
+  bioestadisticas %>%
+  mutate(fecha = as.Date(fecha, format = "%Y-%m-%d")) %>%
+  arrange(fecha)
+```
+
+# Análisis
+
+## Peso y grasa corporal
+
+```{r peso-grasa, message=FALSE}
+peso_grasa <-
+  bioestadisticas %>%
+  ggplot(aes(x = peso, y = `grasa-corporal`)) +
+  geom_point(color = "red") +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  theme_minimal()
+
+ggplotly(peso_grasa)
+```
+
+## Peso y masa muscular
+
+```{r peso-musculo, message=FALSE}
+peso_musculo <-
+  bioestadisticas %>%
+  ggplot(aes(x = peso, y = musculo)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal()
+
+ggplotly(peso_musculo)
+```
+
+## Natación (distancia real) y peso
+
+```{r natacion_peso, message=FALSE}
+natacion_real_peso <-
+  bioestadisticas %>%
+  ggplot(aes(x = `nat-distancia-real`, y = peso)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal()
+
+ggplotly(natacion_real_peso)
+```
+
+## Natación (distancia reloj) y peso
+
+```{r natacion_reloj, message=FALSE}
+natacion_reloj_peso <-
+  bioestadisticas %>%
+  ggplot(aes(x = `nat-distancia-reloj`, y = peso)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal()
+
+ggplotly(natacion_reloj_peso)
+```
+
+
+## Fecha y peso
+
+```{r fecha-peso, message=FALSE}
+fecha_peso <-
+  bioestadisticas %>%
+  ggplot(aes(x = fecha, y = peso)) +
+  geom_line(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal()
+
+ggplotly(fecha_peso)
+```
+
+## Fecha y grasa
+
+```{r fecha-grasa, message=FALSE}
+fecha_grasa <-
+  bioestadisticas %>%
+  ggplot(aes(x = fecha, y = `grasa-corporal`)) +
+  geom_line(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal()
+
+ggplotly(fecha_grasa)
+```
+
+## Fecha y músculo
+
+```{r fecha-musculo, message=FALSE}
+fecha_musculo <-
+  bioestadisticas %>%
+  ggplot(aes(x = fecha, y = musculo)) +
+  geom_line(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal()
+
+ggplotly(fecha_musculo)
+```
