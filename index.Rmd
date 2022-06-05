@@ -111,7 +111,8 @@ fecha_peso <-
   bioestadisticas %>%
   ggplot(aes(x = fecha, y = peso)) +
   geom_line(color = "blue") +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  geom_smooth(method = "gam", se = FALSE, color = "black") +
+  geom_smooth(method = "loess", se = FALSE, color = "gray") +
   theme_minimal()
 
 ggplotly(fecha_peso)
@@ -124,7 +125,8 @@ fecha_grasa <-
   bioestadisticas %>%
   ggplot(aes(x = fecha, y = `grasa-corporal`)) +
   geom_line(color = "blue") +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  geom_smooth(method = "gam", se = FALSE, color = "black") +
+  geom_smooth(method = "loess", se = FALSE, color = "gray") +
   theme_minimal()
 
 ggplotly(fecha_grasa)
@@ -137,7 +139,8 @@ fecha_musculo <-
   bioestadisticas %>%
   ggplot(aes(x = fecha, y = musculo)) +
   geom_line(color = "blue") +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  geom_smooth(method = "gam", se = FALSE, color = "black") +
+  geom_smooth(method = "loess", se = FALSE, color = "gray") +
   theme_minimal()
 
 ggplotly(fecha_musculo)
