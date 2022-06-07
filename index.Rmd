@@ -89,7 +89,7 @@ peso_x_mes <-
 grafico_peso_x_mes <-
   peso_x_mes %>%
   ggplot(aes(x = mes, y = peso)) +
-  geom_bar(stat = "identity") +
+  geom_col() +
   labs(title = "Peso promedio por mes") +  
   theme_minimal()
 
@@ -108,7 +108,7 @@ grasa_x_mes <-
 grafico_grasa_x_mes <-
   grasa_x_mes %>%
   ggplot(aes(x = mes, y = grasa_corporal)) +
-  geom_bar(stat = "identity") +
+  geom_col() +
   labs(title = "Grasa corporal promedio por mes") +  
   theme_minimal()
 
@@ -127,7 +127,7 @@ musculo_x_mes <-
 grafico_musculo_x_mes <-
   musculo_x_mes %>%
   ggplot(aes(x = mes, y = musculo_esqueletico)) +
-  geom_bar(stat = "identity") +
+  geom_col() +
   labs(title = "Músculo esquelético promedio por mes") +  
   theme_minimal()
 
