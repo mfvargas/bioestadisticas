@@ -24,6 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(readr)
 library(dplyr)
 library(tidyr)
+library(lubridate)
 library(ggplot2)
 library(plotly)
 ```
@@ -48,55 +49,115 @@ bioestadisticas <-
 
 ## Peso
 
-### Peso y grasa corporal
+### Peso vs. grasa corporal
 
 ```{r peso-grasa, message=FALSE}
 peso_grasa <-
   bioestadisticas %>%
-  ggplot(aes(x = peso, y = `grasa-corporal`)) +
+  ggplot(aes(x = peso, y = grasa_corporal)) +
   geom_point(color = "red") +
-  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  geom_smooth(color = "black") +
+  labs(title = "Peso vs. grasa corporal") +
   theme_minimal()
 
 ggplotly(peso_grasa)
 ```
 
-### Peso y masa muscular
+### Peso vs. músculo esquelético
 
 ```{r peso-musculo, message=FALSE}
 peso_musculo <-
   bioestadisticas %>%
-  ggplot(aes(x = peso, y = musculo)) +
+  ggplot(aes(x = peso, y = musculo_esqueletico)) +
   geom_point(color = "blue") +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  geom_smooth(color = "black") +
+  labs(title = "Peso vs. músculo esquelético") +  
   theme_minimal()
 
 ggplotly(peso_musculo)
 ```
 
-## Natación
+### Peso por mes
 
-### Natación (distancia real) y peso
-
-```{r natacion_real_peso, message=FALSE}
-natacion_real_peso <-
+```{r peso-x-mes}
+peso_x_mes <-
   bioestadisticas %>%
-  ggplot(aes(x = `nat-distancia-real`, y = peso)) +
-  geom_point(color = "blue") +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  mutate(mes = format_ISO8601(fecha, precision = "ym")) %>%
+  group_by(mes) %>%
+  summarise(peso = mean(peso, na.rm = TRUE))
+
+grafico_peso_x_mes <-
+  peso_x_mes %>%
+  ggplot(aes(x = mes, y = peso)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Peso promedio por mes") +  
   theme_minimal()
 
-ggplotly(natacion_real_peso)
+ggplotly(grafico_peso_x_mes)
 ```
 
-### Natación (distancia reloj) y peso
+### Grasa corporal por mes
+
+```{r grasa-x-mes}
+grasa_x_mes <-
+  bioestadisticas %>%
+  mutate(mes = format_ISO8601(fecha, precision = "ym")) %>%
+  group_by(mes) %>%
+  summarise(grasa_corporal = mean(grasa_corporal, na.rm = TRUE))
+
+grafico_grasa_x_mes <-
+  grasa_x_mes %>%
+  ggplot(aes(x = mes, y = grasa_corporal)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Grasa corporal promedio por mes") +  
+  theme_minimal()
+
+ggplotly(grafico_grasa_x_mes)
+```
+
+### Músculo esquelético por mes
+
+```{r musculo-x-mes}
+musculo_x_mes <-
+  bioestadisticas %>%
+  mutate(mes = format_ISO8601(fecha, precision = "ym")) %>%
+  group_by(mes) %>%
+  summarise(musculo_esqueletico = mean(musculo_esqueletico, na.rm = TRUE))
+
+grafico_musculo_x_mes <-
+  musculo_x_mes %>%
+  ggplot(aes(x = mes, y = musculo_esqueletico)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Músculo esquelético promedio por mes") +  
+  theme_minimal()
+
+ggplotly(grafico_musculo_x_mes)
+```
+
+## Natación
+
+### Natación (distancia medida manualmente) vs. peso
+
+```{r natacion_manual_peso, message=FALSE}
+natacion_manual_peso <-
+  bioestadisticas %>%
+  ggplot(aes(x = natacion_distancia_manual, y = peso)) +
+  geom_point(color = "blue") +
+  geom_smooth(color = "black") +
+  labs(title = "Natación (distancia medida manualmente) vs. peso") +  
+  theme_minimal()
+
+ggplotly(natacion_manual_peso)
+```
+
+### Natación (distancia medida por el reloj) y peso
 
 ```{r natacion_reloj_peso, message=FALSE}
 natacion_reloj_peso <-
   bioestadisticas %>%
-  ggplot(aes(x = `nat-distancia-reloj`, y = peso)) +
+  ggplot(aes(x = natacion_distancia_reloj, y = peso)) +
   geom_point(color = "blue") +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  geom_smooth(color = "black") +
   theme_minimal()
 
 ggplotly(natacion_reloj_peso)
@@ -111,8 +172,7 @@ fecha_peso <-
   bioestadisticas %>%
   ggplot(aes(x = fecha, y = peso)) +
   geom_line(color = "blue") +
-  geom_smooth(method = "gam", se = FALSE, color = "black") +
-  geom_smooth(method = "loess", se = FALSE, color = "gray") +
+  geom_smooth(method = "loess", color = "black") +
   theme_minimal()
 
 ggplotly(fecha_peso)
@@ -123,10 +183,9 @@ ggplotly(fecha_peso)
 ```{r fecha-grasa, message=FALSE}
 fecha_grasa <-
   bioestadisticas %>%
-  ggplot(aes(x = fecha, y = `grasa-corporal`)) +
+  ggplot(aes(x = fecha, y = grasa_corporal)) +
   geom_line(color = "blue") +
-  geom_smooth(method = "gam", se = FALSE, color = "black") +
-  geom_smooth(method = "loess", se = FALSE, color = "gray") +
+  geom_smooth(color = "black") +
   theme_minimal()
 
 ggplotly(fecha_grasa)
@@ -137,37 +196,28 @@ ggplotly(fecha_grasa)
 ```{r fecha-musculo, message=FALSE}
 fecha_musculo <-
   bioestadisticas %>%
-  ggplot(aes(x = fecha, y = musculo)) +
+  ggplot(aes(x = fecha, y = musculo_esqueletico)) +
   geom_line(color = "blue") +
-  geom_smooth(method = "gam", se = FALSE, color = "black") +
-  geom_smooth(method = "loess", se = FALSE, color = "gray") +
+  geom_smooth(color = "black") +
   theme_minimal()
 
 ggplotly(fecha_musculo)
 ```
 
-### Fecha y natación
+### Fecha y natación (distancia medida manualmente)
 
-```{r fecha-natacion, message=FALSE}
-fecha_natacion <-
+```{r fecha-natacion_manual, message=FALSE}
+fecha_natacion_manual <-
   bioestadisticas %>%
-  filter(!is.na(`nat-distancia-real`) & !is.na(`nat-distancia-reloj`)) %>%
+  filter(!is.na(natacion_distancia_manual) & !is.na(natacion_distancia_reloj)) %>%
   ggplot() +
-  geom_line(aes(x = fecha, y = `nat-distancia-real`), color = "blue") +
-  geom_line(aes(x = fecha, y = `nat-distancia-reloj`), color = "red") +
+  geom_line(aes(x = fecha, y = natacion_distancia_manual), color = "blue") +
   geom_smooth(
-    aes(x = fecha, y = `nat-distancia-real`),
-    method = "lm",
-    se = FALSE,
-    color = "blue"
+    aes(x = fecha, y = natacion_distancia_manual),
+    color = "black"
   ) +
-  geom_smooth(
-    aes(x = fecha, y = `nat-distancia-reloj`),
-    method = "lm",
-    se = FALSE,
-    color = "red"
-  ) +  
   theme_minimal()
 
-ggplotly(fecha_natacion)
+ggplotly(fecha_natacion_manual)
 ```
+
