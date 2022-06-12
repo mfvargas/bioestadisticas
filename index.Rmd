@@ -1,9 +1,10 @@
 ---
 title: "Bioestadísticas"
 author: "Manuel Vargas"
-date: "6/5/2022"
+date: "2022-05-06"
 output:
   html_document:
+    code_folding: hide
     theme: readable    
     toc: true
     toc_depth: 5
@@ -51,7 +52,7 @@ bioestadisticas <-
 
 ### Peso vs. grasa corporal
 
-```{r peso-grasa, message=FALSE}
+```{r peso-grasa, message=FALSE, warning=FALSE}
 peso_grasa <-
   bioestadisticas %>%
   ggplot(aes(x = peso, y = grasa_corporal)) +
@@ -65,7 +66,7 @@ ggplotly(peso_grasa)
 
 ### Peso vs. músculo esquelético
 
-```{r peso-musculo, message=FALSE}
+```{r peso-musculo, message=FALSE, warning=FALSE}
 peso_musculo <-
   bioestadisticas %>%
   ggplot(aes(x = peso, y = musculo_esqueletico)) +
@@ -79,7 +80,7 @@ ggplotly(peso_musculo)
 
 ### Peso por mes
 
-```{r peso-x-mes}
+```{r peso-x-mes, message=FALSE, warning=FALSE}
 peso_x_mes <-
   bioestadisticas %>%
   mutate(mes = format_ISO8601(fecha, precision = "ym")) %>%
@@ -98,7 +99,7 @@ ggplotly(grafico_peso_x_mes)
 
 ### Grasa corporal por mes
 
-```{r grasa-x-mes}
+```{r grasa-x-mes, message=FALSE, warning=FALSE}
 grasa_x_mes <-
   bioestadisticas %>%
   mutate(mes = format_ISO8601(fecha, precision = "ym")) %>%
@@ -117,7 +118,7 @@ ggplotly(grafico_grasa_x_mes)
 
 ### Músculo esquelético por mes
 
-```{r musculo-x-mes}
+```{r musculo-x-mes, message=FALSE, warning=FALSE}
 musculo_x_mes <-
   bioestadisticas %>%
   mutate(mes = format_ISO8601(fecha, precision = "ym")) %>%
@@ -138,7 +139,7 @@ ggplotly(grafico_musculo_x_mes)
 
 ### Natación (distancia medida manualmente) vs. peso
 
-```{r natacion_manual_peso, message=FALSE}
+```{r natacion_manual_peso, message=FALSE, warning=FALSE}
 natacion_manual_peso <-
   bioestadisticas %>%
   ggplot(aes(x = natacion_distancia_manual, y = peso)) +
@@ -152,7 +153,7 @@ ggplotly(natacion_manual_peso)
 
 ### Natación (distancia medida por el reloj) y peso
 
-```{r natacion_reloj_peso, message=FALSE}
+```{r natacion_reloj_peso, message=FALSE, warning=FALSE}
 natacion_reloj_peso <-
   bioestadisticas %>%
   ggplot(aes(x = natacion_distancia_reloj, y = peso)) +
@@ -167,7 +168,7 @@ ggplotly(natacion_reloj_peso)
 
 ### Fecha y peso
 
-```{r fecha-peso, message=FALSE}
+```{r fecha-peso, message=FALSE, warning=FALSE}
 fecha_peso <-
   bioestadisticas %>%
   ggplot(aes(x = fecha, y = peso)) +
@@ -180,7 +181,7 @@ ggplotly(fecha_peso)
 
 ### Fecha y grasa
 
-```{r fecha-grasa, message=FALSE}
+```{r fecha-grasa, message=FALSE, warning=FALSE}
 fecha_grasa <-
   bioestadisticas %>%
   ggplot(aes(x = fecha, y = grasa_corporal)) +
@@ -193,7 +194,7 @@ ggplotly(fecha_grasa)
 
 ### Fecha y músculo
 
-```{r fecha-musculo, message=FALSE}
+```{r fecha-musculo, message=FALSE, warning=FALSE}
 fecha_musculo <-
   bioestadisticas %>%
   ggplot(aes(x = fecha, y = musculo_esqueletico)) +
@@ -206,7 +207,7 @@ ggplotly(fecha_musculo)
 
 ### Fecha y natación (distancia medida manualmente)
 
-```{r fecha-natacion_manual, message=FALSE}
+```{r fecha-natacion_manual, message=FALSE, warning=FALSE}
 fecha_natacion_manual <-
   bioestadisticas %>%
   filter(!is.na(natacion_distancia_manual) & !is.na(natacion_distancia_reloj)) %>%
@@ -221,3 +222,19 @@ fecha_natacion_manual <-
 ggplotly(fecha_natacion_manual)
 ```
 
+### Fecha y natación (distancia medida por el reloj)
+
+```{r fecha-natacion_reloj, message=FALSE, warning=FALSE}
+fecha_natacion_reloj <-
+  bioestadisticas %>%
+  filter(!is.na(natacion_distancia_manual) & !is.na(natacion_distancia_reloj)) %>%
+  ggplot() +
+  geom_line(aes(x = fecha, y = natacion_distancia_reloj), color = "blue") +
+  geom_smooth(
+    aes(x = fecha, y = natacion_distancia_reloj),
+    color = "black"
+  ) +
+  theme_minimal()
+
+ggplotly(fecha_natacion_reloj)
+```
