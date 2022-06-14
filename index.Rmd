@@ -151,7 +151,7 @@ natacion_manual_peso <-
 ggplotly(natacion_manual_peso)
 ```
 
-### Natación (distancia medida por el reloj) y peso
+### Natación (distancia medida por el reloj) vs. peso
 
 ```{r natacion_reloj_peso, message=FALSE, warning=FALSE}
 natacion_reloj_peso <-
@@ -162,6 +162,62 @@ natacion_reloj_peso <-
   theme_minimal()
 
 ggplotly(natacion_reloj_peso)
+```
+
+### Natación (distancia medida manualmente) vs. grasa corporal
+
+```{r natacion_manual_grasa, message=FALSE, warning=FALSE}
+natacion_manual_grasa <-
+  bioestadisticas %>%
+  ggplot(aes(x = natacion_distancia_manual, y = grasa_corporal)) +
+  geom_point(color = "blue") +
+  geom_smooth(color = "black") +
+  labs(title = "Natación (distancia medida manualmente) vs. grasa corporal") +  
+  theme_minimal()
+
+ggplotly(natacion_manual_grasa)
+```
+
+### Natación (distancia medida por el reloj) vs. grasa corporal
+
+```{r natacion_reloj_grasa, message=FALSE, warning=FALSE}
+natacion_manual_reloj <-
+  bioestadisticas %>%
+  ggplot(aes(x = natacion_distancia_reloj, y = grasa_corporal)) +
+  geom_point(color = "blue") +
+  geom_smooth(color = "black") +
+  labs(title = "Natación (distancia medida por el reloj) vs. grasa corporal") +  
+  theme_minimal()
+
+ggplotly(natacion_manual_reloj)
+```
+
+### Natación (distancia medida manualmente) vs. músculo esquelético
+
+```{r natacion_manual_musculo, message=FALSE, warning=FALSE}
+natacion_manual_musculo <-
+  bioestadisticas %>%
+  ggplot(aes(x = natacion_distancia_manual, y = musculo_esqueletico)) +
+  geom_point(color = "blue") +
+  geom_smooth(color = "black") +
+  labs(title = "Natación (distancia medida manualmente) vs. músculo esquelético") +  
+  theme_minimal()
+
+ggplotly(natacion_manual_musculo)
+```
+
+### Natación (distancia medida por el reloj) vs. músculo esquelético
+
+```{r natacion_reloj_musculo, message=FALSE, warning=FALSE}
+natacion_reloj_musculo <-
+  bioestadisticas %>%
+  ggplot(aes(x = natacion_distancia_reloj, y = musculo_esqueletico)) +
+  geom_point(color = "blue") +
+  geom_smooth(color = "black") +
+  labs(title = "Natación (distancia medida por el reloj) vs. músculo esquelético") +  
+  theme_minimal()
+
+ggplotly(natacion_reloj_musculo)
 ```
 
 ## Fecha
@@ -179,7 +235,7 @@ fecha_peso <-
 ggplotly(fecha_peso)
 ```
 
-### Fecha y grasa
+### Fecha y grasa corporal
 
 ```{r fecha-grasa, message=FALSE, warning=FALSE}
 fecha_grasa <-
@@ -192,7 +248,7 @@ fecha_grasa <-
 ggplotly(fecha_grasa)
 ```
 
-### Fecha y músculo
+### Fecha y músculo esquelético
 
 ```{r fecha-musculo, message=FALSE, warning=FALSE}
 fecha_musculo <-
