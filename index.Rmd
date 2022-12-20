@@ -78,6 +78,20 @@ peso_musculo <-
 ggplotly(peso_musculo)
 ```
 
+### Músculo esquelético vs. grasa corporal
+
+```{r musculo-grasa, message=FALSE, warning=FALSE}
+musculo_grasa <-
+  bioestadisticas %>%
+  ggplot(aes(x = musculo_esqueletico, y = grasa_corporal)) +
+  geom_point(color = "blue") +
+  geom_smooth(color = "black") +
+  labs(title = "Músculo esquelético vs. grasa corporal") +  
+  theme_minimal()
+
+ggplotly(musculo_grasa)
+```
+
 ### Peso por mes
 
 ```{r peso-x-mes, message=FALSE, warning=FALSE}
