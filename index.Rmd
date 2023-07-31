@@ -1,7 +1,7 @@
 ---
 title: "Bioestadísticas"
 author: "Manuel Vargas"
-date: "2023-06-30"
+date: "2023-07-31"
 output:
   html_document:
     code_folding: hide
